@@ -1,10 +1,13 @@
 tasks:
   unlock:
-    run: |
-      age -d -i ~/.age/devops-tasks.age -o notes.md notes.md.age
+    run:
+      - when:
+          exists: notes.md
+        command: rm notes.md
+      - command: age -d -i ~/.age/devops-tasks.age -o notes.md notes.md.age
   lock:
-    run: |
-      rm notes.md.age && \
-      age -r age1p2024ztnj33skglks6dm98teh6su8xzw84wuy8ghqrhzgzlyh9xqcca352 -o notes.md.age notes.md && \
-      rm notes.md
-
+    run: 
+      - when:
+          exists: notes.md.age
+        command: rm notes.md.age
+      - command: age -r age1p2024ztnj33skglks6dm98teh6su8xzw84wuy8ghqrhzgzlyh9xqcca352 -a -o notes.md.age notes.md
