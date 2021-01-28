@@ -1,0 +1,15 @@
+tasks:
+  unlock:
+    run:
+      - when:
+          exists: notes.md
+        command: rm notes.md
+      # secure the Notes file using a private key
+      - command: age -d -i ~/.age/devops-tasks.age -o notes.md notes.md.age
+  lock:
+    run: 
+      - when:
+          exists: notes.md.age
+        command: rm notes.md.age
+      # The public key of my Age keypair used to secure the "notes" file which contains answers
+      - command: age -r age1p2024ztnj33skglks6dm98teh6su8xzw84wuy8ghqrhzgzlyh9xqcca352 -a -o notes.md.age notes.md
